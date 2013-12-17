@@ -30,8 +30,13 @@ public class UploadController extends Controller {
         if(bufferedJpegImage == null)
             return internalServerError(Json.toJson(new Message(500, "Error in processing your request.", MessageType.INTERNAL_SERVER_ERROR)));
         else {
+            boolean jpegSaved = DicomToJpegConverter.writeJpegToDisk(bufferedJpegImage);
+            if(jpegSaved)
+                return ok(Json.toJson(new Message(200, "Successfully uploaded!", MessageType.SUCCESSFUL)));
+            else
+                return internalServerError(Json.toJson(new Message(500, "Jpeg not saved!", MessageType.INTERNAL_SERVER_ERROR)));
             //return ok(Json.toJson(new Message(200, "DICOM FILE META INFO : " + dicomObject.fileMetaInfo() + "\nDICOM BIG EDIAN : " + dicomObject.bigEndian() + "\nDICOM CACHE GET : " + dicomObject.cacheGet() + "\nDICOM SIZE : " + dicomObject.size(), MessageType.SUCCESSFUL)));
-            return ok(Json.toJson(new Message(200, "Successfully uploaded!", MessageType.SUCCESSFUL)));
+
            /* boolean written = DicomToJpegConverter.writeJpegToDisk(bufferedJpegImage);
             if(written)
                 return ok(Json.toJson(new Message(200, "Jpeg image written to disk.", MessageType.SUCCESSFUL)));

@@ -1,11 +1,10 @@
 package models.request.helper;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam;
-import org.dcm4che2.imageioimpl.plugins.dcm.DicomImageReader;
 import org.dcm4che2.io.DicomInputStream;
-import play.Logger;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -14,7 +13,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Date;
 import java.util.Iterator;
 
 public class DicomToJpegConverter {
@@ -29,14 +27,6 @@ public class DicomToJpegConverter {
         Iterator<ImageReader> imageReaderIterator = ImageIO.getImageReadersByFormatName(FORMAT_DICOM);
         while (imageReaderIterator.hasNext()){
             try {
-                dis = new DicomInputStream(dicomFile);
-                dio = dis.readDicomObject();
-                dis.close();
-                Logger.info("DICOM FILE META INFO : " + dio.fileMetaInfo());
-                Logger.info("DICOM BIG EDIAN : " + dio.bigEndian());
-                Logger.info("DICOM CACHE GET : " + dio.cacheGet());
-                Logger.info("DICOM SIZE : " + dio.size());
-
                 ImageReader imageReader = imageReaderIterator.next();
                 DicomImageReadParam dirParam = (DicomImageReadParam) imageReader.getDefaultReadParam();
                 if(dicomFile == null)
@@ -45,6 +35,15 @@ public class DicomToJpegConverter {
                 imageReader.setInput(iis, false);
                 jpegImage = imageReader.read(0, dirParam);
                 iis.close();
+                if(jpegImage == null)
+                    return null;
+                /*dis = new DicomInputStream(dicomFile);
+                dio = dis.readDicomObject();
+                dis.close();
+                Logger.info("DICOM FILE META INFO : " + dio.fileMetaInfo());
+                Logger.info("DICOM BIG EDIAN : " + dio.bigEndian());
+                Logger.info("DICOM CACHE GET : " + dio.cacheGet());
+                Logger.info("DICOM SIZE : " + dio.size());*/
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -52,19 +51,18 @@ public class DicomToJpegConverter {
         }
         return jpegImage;
     }
-/*
-    public static boolean writeJpegToDisk(BufferedImage jpegImage) {
+    public static boolean writeJpegToDisk(BufferedImage dicomJpegImage) {
 
         try {
-            File jpegFile = new File("c:/jpegImage_" + new Date().getTime() + ".jpg");
-            OutputStream os = new BufferedOutputStream(new FileOutputStream(jpegFile));
-            JPEGImageEncoder jpegImageEncoder = JPEGCodec.createJPEGEncoder(os);
-            jpegImageEncoder.encode(jpegImage);
-            os.close();
+            File myJpegFile = new File("g:/DicomJpegFiles/image.jpg");
+            OutputStream output = new BufferedOutputStream(new FileOutputStream(myJpegFile));
+            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+            encoder.encode(dicomJpegImage);
+            output.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-    }*/
+    }
 }
