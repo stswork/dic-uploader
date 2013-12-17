@@ -11,5 +11,6 @@ GET    /Gallery                     controllers.Application.gallery()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # upload
-POST    /uploadD                    controllers.dicom.DicomController.uploadDicomAndWriteToDiskAsJpeg()
-POST    /uploadJ                    controllers.dicom.DicomController.uploadJpegAndWriteToDiskAsDicom()
+POST    /uploadDJ                   controllers.dicom.DicomController.uploadDicomAndWriteToDiskAsJpeg()
+POST    /uploadJD                   controllers.dicom.DicomController.uploadJpegAndWriteToDiskAsDicom()
+POST    /uploadJ                    controllers.dicom.DicomController.uploadJpegAndWriteTODisk()
