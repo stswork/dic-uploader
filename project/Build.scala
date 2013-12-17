@@ -11,8 +11,7 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     javaCore,
     javaJdbc,
-    javaEbean,
-    "gov.nih.imagej" % "imagej" % "1.47"
+    javaEbean
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
