@@ -78,10 +78,10 @@ public class DicomToJpegConverter {
         }
     }
 
-    public static boolean writeJpegToDisk(BufferedImage dicomJpegImage) {
+    public static boolean writeJpegToDisk(BufferedImage dicomJpegImage, String userHomePath) {
 
         try {
-            File myJpegFile = new File("g:/dic-uploader-data/DicomToJpeg/DtoJ-" + new Date().getTime() + ".jpg");
+            File myJpegFile = new File(userHomePath + "/DtoJ-" + new Date().getTime() + ".jpg");
             OutputStream output = new BufferedOutputStream(new FileOutputStream(myJpegFile));
             JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
             encoder.encode(dicomJpegImage);
@@ -92,9 +92,9 @@ public class DicomToJpegConverter {
             return false;
         }
     }
-    public static boolean writeDicomToDisk(File jpegFile, DicomObject dicomObject) {
+    public static boolean writeDicomToDisk(File jpegFile, DicomObject dicomObject, String userHomePath) {
         try {
-            File dicomFile = new File("g:/dic-uploader-data/JpegToDicom/JtoD-" + new Date().getTime() + ".dcm");
+            File dicomFile = new File(userHomePath + "/JtoD-" + new Date().getTime() + ".dcm");
             FileOutputStream fos = new FileOutputStream(dicomFile);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             DicomOutputStream dos = new DicomOutputStream(bos);
