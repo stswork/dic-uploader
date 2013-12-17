@@ -1,7 +1,7 @@
 @(message: String)
 
 @main("Welcome to Play 2.1") {
-<form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.upload.routes.UploadController.uploadDicomFile()">
+<form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToDiskAsJpeg()">
     <label id="dicomFCLabel" for="dicomFC" />
     <input id="dicomFC" name="dicomFC" type="file" />
     <button id="dicomUploadSubmit" name="dicomUploadSubmit">Upload</button>

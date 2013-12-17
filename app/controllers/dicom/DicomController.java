@@ -1,9 +1,8 @@
-package controllers.upload;
+package controllers.dicom;
 
 import models.request.helper.DicomToJpegConverter;
 import models.response.MessageType;
 import models.response.Message;
-import org.dcm4che2.data.DicomObject;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -12,7 +11,7 @@ import play.mvc.Result;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class UploadController extends Controller {
+public class DicomController extends Controller {
 
     public static Result uploadDicomAndWriteToDiskAsJpeg() {
         Http.MultipartFormData.FilePart dicomFilePart = null;
