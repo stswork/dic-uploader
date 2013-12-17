@@ -1,5 +1,6 @@
 package controllers.dicom;
 
+import controllers.*;
 import models.request.helper.DicomManager;
 import models.response.MessageType;
 import models.response.Message;
@@ -37,13 +38,13 @@ public class DicomController extends Controller {
             //SAVING JPEG TO DISK
             boolean jpegSaved = DicomManager.writeJpegToDisk(bufferedJpegImage, PATH_FOR_JPEG);
             if(jpegSaved)
-                return ok(Json.toJson(new Message(200, "Jpeg successfully saved to " + PATH_FOR_JPEG, MessageType.SUCCESSFUL)));
+                return redirect(controllers.routes.Application.gallery());
             else
-                return internalServerError(Json.toJson(new Message(500, "Jpeg not saved!", MessageType.INTERNAL_SERVER_ERROR)));
+                return redirect(controllers.routes.Application.index());
         }
     }
 
-    public static Result uploadJpegAndWriteToDisk() {
+    public static Result uploadJpegAndWriteToDiskAsDicom() {
         Http.MultipartFormData.FilePart jpegFilePart = null;
         File jpegFile = null;
         DicomObject dicomObject = null;
