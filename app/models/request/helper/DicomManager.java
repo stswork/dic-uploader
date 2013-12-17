@@ -1,16 +1,14 @@
 package models.request.helper;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.dcm4che2.data.*;
 import org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam;
 import org.dcm4che2.io.DicomInputStream;
 import org.dcm4che2.io.DicomOutputStream;
 import org.dcm4che2.util.UIDUtils;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
+import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
@@ -78,23 +76,32 @@ public class DicomManager {
         }
     }
 
-    public static boolean writeJpegToDisk(BufferedImage dicomJpegImage, String userHomePath) {
+    public static boolean writeDicomJpegToDisk(BufferedImage dicomJpegImage, String pathToSave) {
 
         try {
-            File myJpegFile = new File(userHomePath + "/DtoJ-" + new Date().getTime() + ".jpg");
-            OutputStream output = new BufferedOutputStream(new FileOutputStream(myJpegFile));
-            JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+            File jpegFile = new File(pathToSave + "/DtoJ-" + new Date().getTime() + ".jpg");
+            OutputStream output = new BufferedOutputStream(new FileOutputStream(jpegFile));
+            Iterator iterator = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = (ImageWriter)iterator.next();
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            ImageOutputStream ios = ImageIO.createImageOutputStream(output);
+            writer.setOutput(ios);
+            writer.write(null, new IIOImage(dicomJpegImage, null, null), iwp);
+            ios.flush();
+            writer.dispose();
+            ios.close();
+            /*JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
             encoder.encode(dicomJpegImage);
-            output.close();
+            output.close();*/
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    public static boolean writeDicomToDisk(File jpegFile, DicomObject dicomObject, String userHomePath) {
+    public static boolean writeDicomToDisk(File jpegFile, DicomObject dicomObject, String pathToSave) {
         try {
-            File dicomFile = new File(userHomePath + "/JtoD-" + new Date().getTime() + ".dcm");
+            File dicomFile = new File(pathToSave + "/JtoD-" + new Date().getTime() + ".dcm");
             FileOutputStream fos = new FileOutputStream(dicomFile);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             DicomOutputStream dos = new DicomOutputStream(bos);
@@ -115,6 +122,27 @@ public class DicomManager {
                 dos.write(0);
             dos.writeHeader(Tag.SequenceDelimitationItem, null, 0);
             dos.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean writeJpegToDisk(File jpegFile, String pathToSave) {
+        try {
+            File jFile = new File(pathToSave + "/J-" + new Date().getTime() + ".jpg");
+            BufferedImage bufferedImage = ImageIO.read(jpegFile);
+            OutputStream output = new BufferedOutputStream(new FileOutputStream(jFile));
+            Iterator iterator = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = (ImageWriter)iterator.next();
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            ImageOutputStream ios = ImageIO.createImageOutputStream(output);
+            writer.setOutput(ios);
+            writer.write(null, new IIOImage(bufferedImage, null, null), iwp);
+            ios.flush();
+            writer.dispose();
+            ios.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

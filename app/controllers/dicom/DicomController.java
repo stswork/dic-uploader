@@ -25,7 +25,7 @@ public class DicomController extends Controller {
         BufferedImage bufferedJpegImage = null;
         Http.MultipartFormData body = request().body().asMultipartFormData();
         if(body != null)
-            dicomFilePart = body.getFile("dicomFC");
+            dicomFilePart = body.getFile("dicomToJpegFC");
         if(dicomFilePart != null)
             dicomFile = dicomFilePart.getFile();
         if(dicomFile == null)
@@ -36,7 +36,7 @@ public class DicomController extends Controller {
             return internalServerError(Json.toJson(new Message(500, "Error in processing your request.", MessageType.INTERNAL_SERVER_ERROR)));
         else {
             //SAVING JPEG TO DISK
-            boolean jpegSaved = DicomManager.writeJpegToDisk(bufferedJpegImage, PATH_FOR_JPEG);
+            boolean jpegSaved = DicomManager.writeDicomJpegToDisk(bufferedJpegImage, PATH_FOR_JPEG);
             if(jpegSaved)
                 return redirect(controllers.routes.Application.gallery());
             else
@@ -50,7 +50,7 @@ public class DicomController extends Controller {
         DicomObject dicomObject = null;
         Http.MultipartFormData body = request().body().asMultipartFormData();
         if(body != null)
-            jpegFilePart = body.getFile("jpegFC");
+            jpegFilePart = body.getFile("jpegToDicomFC");
         if(jpegFilePart != null)
             jpegFile = jpegFilePart.getFile();
         if(jpegFile == null)
@@ -67,5 +67,22 @@ public class DicomController extends Controller {
             else
                 return internalServerError(Json.toJson(new Message(500, "Jpeg not saved!", MessageType.INTERNAL_SERVER_ERROR)));
         }
+    }
+
+    public static Result uploadJpegAndWriteTODisk() {
+        Http.MultipartFormData.FilePart jpegFilePart = null;
+        File jpegFile = null;
+        Http.MultipartFormData body = request().body().asMultipartFormData();
+        if(body != null)
+            jpegFilePart = body.getFile("jpegFC");
+        if(jpegFilePart != null)
+            jpegFile = jpegFilePart.getFile();
+        if(jpegFile == null)
+            return notFound(Json.toJson(new Message(404, "File not found.", MessageType.NOT_FOUND)));
+        boolean jpegWritten = DicomManager.writeJpegToDisk(jpegFile, PATH_FOR_JPEG);
+        if(jpegWritten)
+            return redirect(controllers.routes.Application.gallery());
+        else
+            return redirect(controllers.routes.Application.index());
     }
 }
