@@ -64,6 +64,5 @@ public class DicomController extends Controller {
             else
                 return internalServerError(Json.toJson(new Message(500, "Jpeg not saved!", MessageType.INTERNAL_SERVER_ERROR)));
         }
-
     }
 }
