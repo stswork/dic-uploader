@@ -1,5 +1,7 @@
 package controllers;
 
+import play.Logger;
+import play.api.Play;
 import play.mvc.*;
 
 import java.io.File;
@@ -16,16 +18,18 @@ public class Application extends Controller {
 
     public static Result gallery() {
 
-       /* List<String> results = new ArrayList<String>();
-        File[] files = new File(play.api.Play.getFile("/images/jpeg/")).listFiles();
+        List<String> results = new ArrayList<String>();
+        File[] files = new File("/images/jpeg/").listFiles();
 
-        for (File file : files) {
-            if (file.isFile()) {
-                results.add(file.getName());
+        if(files !=null)
+            for (File file : files) {
+                if (file.isFile()) {
+                    results.add(file.getName());
+                }
             }
-        }*/
 
-
+        //String projectRoot = Play.getFile("/images/jpeg/",File[]);
+        Logger.info("**********************");
 
         return ok(views.html.gallery.render("Your new application is ready."));
     }
