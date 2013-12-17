@@ -16,16 +16,16 @@ public class Application extends Controller {
 
     public static Result gallery() {
 
-     /*   List<String> results = new ArrayList<String>();
-        File[] files = new File("../images/jpeg/").listFiles();
+       /* List<String> results = new ArrayList<String>();
+        File[] files = new File(play.api.Play.getFile("/images/jpeg/")).listFiles();
 
         for (File file : files) {
             if (file.isFile()) {
                 results.add(file.getName());
             }
-        }
+        }*/
 
-*/
+
 
         return ok(views.html.gallery.render("Your new application is ready."));
     }
