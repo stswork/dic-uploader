@@ -31,20 +31,13 @@ public class DicomToJpegConverter {
                 ImageReader imageReader = imageReaderIterator.next();
                 DicomImageReadParam dirParam = (DicomImageReadParam) imageReader.getDefaultReadParam();
                 if(dicomFile == null)
-                    return jpegImage;
+                    return  null;
                 ImageInputStream iis = ImageIO.createImageInputStream(dicomFile);
                 imageReader.setInput(iis, false);
                 jpegImage = imageReader.read(0, dirParam);
                 iis.close();
                 if(jpegImage == null)
                     return null;
-                /*dis = new DicomInputStream(dicomFile);
-                dio = dis.readDicomObject();
-                dis.close();
-                Logger.info("DICOM FILE META INFO : " + dio.fileMetaInfo());
-                Logger.info("DICOM BIG EDIAN : " + dio.bigEndian());
-                Logger.info("DICOM CACHE GET : " + dio.cacheGet());
-                Logger.info("DICOM SIZE : " + dio.size());*/
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
