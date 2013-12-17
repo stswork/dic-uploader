@@ -21,19 +21,15 @@ public class Application extends Controller {
 
     public static Result gallery() {
 
-        List<String> results = new ArrayList<String>();
-        File[] files = new File(PATH_FOR_JPEG).listFiles();
-
-        if(files !=null)
-            for (File file : files) {
+        List<String> jpegFilePaths = new ArrayList<String>();
+        File[] jpegImageFiles = new File(PATH_FOR_JPEG).listFiles();
+        if(jpegImageFiles != null) {
+            for (File file : jpegImageFiles) {
                 if (file.isFile()) {
-                    results.add(file.getName());
+                    jpegFilePaths.add(file.getName());
                 }
             }
-
-        //String projectRoot = Play.getFile("/images/jpeg/",File[]);
-        Logger.info("**********************");
-
-        return ok(views.html.gallery.render("Your new application is ready.",results));
+        }
+        return ok(views.html.gallery.render("Gallery",jpegFilePaths));
     }
 }

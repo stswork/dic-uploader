@@ -71,11 +71,11 @@
         <div class="grid_9">
 
             <!-- for condition list-->
-            @for(imagepath <- images){
-            <a class="lightbox_trigger portfolio_item float alpha" href='imagepath'>
-                <span>Project Name</span>
-                <img class="example-image" src='imagepath'  alt=""/>
-            </a>
+            @for(i <- images){
+                <a class="lightbox_trigger portfolio_item float alpha" href='imagepath'>
+                    <span>Project Name</span>
+                    <img class="example-image" src='@routes.Assets.at("images/jpeg/")@i'  alt=""/>
+                </a>
             }
 
             <!-- end for -->
