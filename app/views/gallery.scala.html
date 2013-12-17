@@ -73,7 +73,7 @@
             <!-- for condition list-->
             @for(i <- images){
                 <a class="lightbox_trigger portfolio_item float alpha" href='@routes.Assets.at("images/jpeg/")@i'>
-                    <span>Project Name</span>
+                    <span>@i</span>
                     <img class="example-image" src='@routes.Assets.at("images/jpeg/")@i'  alt=""/>
                 </a>
             }
