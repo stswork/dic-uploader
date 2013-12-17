@@ -23,7 +23,7 @@
 
     <!-- File Upload-->
     <h2 class="grid_12 caption clearfix">Please Upload Dicom Files:
-        <form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.upload.routes.UploadController.uploadDicomFile()">
+        <form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToDiskAsJpeg()">
 			<span>
 				<input type="file" name="dicomFC" id="dicomFC" accept="*">
 				  <button id="dicomUploadSubmit" name="dicomUploadSubmit">Upload</button>
