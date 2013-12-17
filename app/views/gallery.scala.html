@@ -10,11 +10,13 @@
 
     <!-- Navigation Menu -->
     <ul id="navigation" class="grid_8">
-        <li><a href="portfolio.html"><span class="meta">Photo Gallery</span><br />Gallery</a></li>
-        <li><a href="index.html" class="current"><span class="meta">Homepage</span><br />Home</a></li>
+        <li><a href="/Gallery"><span class="meta">Photo Gallery</span><br />Gallery</a></li>
+        <li><a href="/" class="current"><span class="meta">Homepage</span><br />Home</a></li>
     </ul>
 
     <div class="hr grid_12 clearfix">&nbsp;</div>
+
+    <!-- End Header -->
 
     <!-- Catch Line and Link -->
     <h2 class="grid_12 caption clearfix">Our <span>Photo Gallery</span> !!! <a href="software/dicom-converter-setup.exe" style="float:right;">Download Dicom Windows Converter</a></h2>
@@ -38,6 +40,7 @@
 
     <div class="pr grid_12 clearfix">&nbsp;</div>
 
+    <form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToDiskAsJpeg()">
     <h2 class="grid_12 caption clearfix">Please Upload JEPG Files:
 		<span>
 				<input type="file" name="jpegfile" id="jpegfile" accept="image/*">
@@ -45,6 +48,7 @@
 			</span>
 
     </h2>
+    </form>
 
     <div class="pr grid_12 clearfix">&nbsp;</div>
 
@@ -65,12 +69,12 @@
             <p>Cras vestibulum lorem et dui mollis sed posuere leo semper. Integer ac ultrices neque. Cras lacinia orci a augue tempor egestas. Sed cursus, sem ut vehicula vehicula, ipsum est mattis justo, at volutpat nibh arcu sit amet risus.</p>
         </div> -->
         <div class="grid_9">
-            <a class="portfolio_item float alpha" href="@routes.Assets.at("images/jpeg/brain_001.jpg")">
+            <a class="lightbox_trigger portfolio_item float alpha" href="@routes.Assets.at("images/jpeg/brain_001.jpg")">
                 <span>Project Name</span>
                 <img class="example-image" src="@routes.Assets.at("images/jpeg/brain_001.jpg")"  alt=""/>
             </a>
 
-            <a class="portfolio_item float alpha" href="@routes.Assets.at("images/jpeg/brain_002.jpg")">
+            <a class="lightbox_trigger portfolio_item float alpha" href="@routes.Assets.at("images/jpeg/brain_002.jpg")">
                 <span>Project Name</span>
                 <img class="" src="@routes.Assets.at("images/jpeg/brain_002.jpg")"  alt=""/>
             </a>
@@ -85,6 +89,63 @@
     <!-- footer -->
 
 
+
+
+
+
 </div><!--end wrapper-->
+
+<script>
+    jQuery(document).ready(function($) {
+
+    $('.lightbox_trigger').click(function(e) {
+
+    //prevent default action (hyperlink)
+    e.preventDefault();
+
+    //Get clicked link href
+    var image_href = $(this).attr("href");
+
+    /*
+    If the lightbox window HTML already exists in document,
+    change the img src to to match the href of whatever link was clicked
+
+    If the lightbox window HTML doesn't exists, create it and insert it.
+    (This will only happen the first time around)
+    */
+
+    if ($('#lightbox').length > 0) { // #lightbox exists
+
+    //place href as img src value
+    $('#content').html('<img src="' + image_href + '" />');
+
+    //show lightbox window - you could use .show('fast') for a transition
+    $('#lightbox').show();
+    }
+
+    else { //#lightbox does not exist - create and insert (runs 1st time only)
+
+    //create HTML markup for lightbox window
+    var lightbox =
+    '<div id="lightbox">' +
+    '<p>Click to close</p>' +
+    '<div id="content">' + //insert clicked link's href into img src
+        '<img src="' + image_href +'" />' +
+        '</div>' +
+    '</div>';
+
+    //insert lightbox HTML into page
+    $('body').append(lightbox);
+    }
+
+    });
+
+    //Click anywhere on the page to get rid of lightbox window
+    $('#lightbox').live('click', function() { //must use live, as the lightbox element is inserted into the DOM
+    $('#lightbox').hide();
+    });
+
+    });
+</script>
 
 }

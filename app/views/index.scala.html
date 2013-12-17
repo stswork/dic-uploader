@@ -1,9 +1,97 @@
 @(message: String)
 
 @main("Welcome to Play 2.1") {
+
+<!--
 <form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToDiskAsJpeg()">
     <label id="dicomFCLabel" for="dicomFC" />
     <input id="dicomFC" name="dicomFC" type="file" />
     <button id="dicomUploadSubmit" name="dicomUploadSubmit">Upload</button>
 </form>
+-->
+
+<div id="wrapper" class="container_12 clearfix">
+
+
+    <!-- Header -->
+    <!-- Text Logo -->
+    <h1 id="logo" class="grid_4">Boehringer Ingelheim India</h1>
+
+    <!-- Navigation Menu -->
+    <ul id="navigation" class="grid_8">
+        <li><a href="/Gallery"><span class="meta">Photo Gallery</span><br />Gallery</a></li>
+        <li><a href="/" class="current"><span class="meta">Homepage</span><br />Home</a></li>
+    </ul>
+
+    <div class="hr grid_12">&nbsp;</div>
+
+    <!-- End Header -->
+
+    <div class="clear"></div>
+
+    <!-- Caption Line -->
+    <h2 class="grid_12 caption clearfix">Welcome! This is <span>Boehringer Ingelheim India</span></h2>
+
+
+
+    <div class="hr grid_12">&nbsp;</div>
+    <div class="clear"></div>
+
+    <h2 class="grid_12 caption clearfix">
+        Please Visit Gallery to check our recent work on DICOM Converter and Dicom Image Uploader.
+    </h2>
+
+
+    <div class="grid_12">&nbsp;</div>
+    <div class="clear"></div>
+    <div class="grid_12">&nbsp;</div>
+    <div class="clear"></div>
+    <div class="grid_12">&nbsp;</div>
+    <div class="clear"></div>
+    <div class="grid_12">&nbsp;</div>
+    <div class="clear"></div>
+    <div class="grid_12">&nbsp;</div>
+    <div class="clear"></div>
+    <div class="grid_12">&nbsp;</div>
+    <div class="clear"></div>
+
+
+
+    <div class="hr grid_12 clearfix quicknavhr">&nbsp;</div>
+    <div id="quicknav" class="grid_12">
+        <a class="quicknavgrid_3 quicknav alpha" href="#">
+            <h4 class="title ">Recent Work</h4>
+           <!-- <p>Cras vestibulum lorem et dui mollis sed posuere leo semper. </p>       -->
+            <p style="text-align:center;"><img alt="" src="@routes.Assets.at("images/Art_Artdesigner.lv.png")" /></p>
+
+        </a>
+        <a class="quicknavgrid_3 quicknav" href="#">
+            <h4 class="title ">Learn about us</h4>
+           <!-- <p>Cras vestibulum lorem et dui mollis sed posuere leo semper. </p>   -->
+            <p style="text-align:center;"><img alt="" src="@routes.Assets.at("images/info.png")" /></p>
+            <p></p>
+        </a>
+        <a class="quicknavgrid_3 quicknav" href="#">
+            <h4 class="title ">Read our blog</h4>
+          <!--  <p>Cras vestibulum lorem et dui mollis sed posuere leo semper. </p>   -->
+            <p style="text-align:center;"><img alt="" src="@routes.Assets.at("images/Blog_Artdesigner.lv.png")" /></p>
+            <p></p>
+        </a>
+        <a class="quicknavgrid_3 quicknav" href="#">
+            <h4 class="title ">Follow on Twitter</h4>
+           <!-- <p>Cras vestibulum lorem et dui mollis sed posuere leo semper. </p>   -->
+            <p style="text-align:center;"><img alt="" src="@routes.Assets.at("images/hungry_bird.png")" /></p>
+            <p></p>
+        </a>
+    </div>
+    <div class="hr grid_12 clearfix">&nbsp;</div>
+    <!-- Footer -->
+    <p class="grid_12 footer clearfix">
+        <span class="float"><b>&copy; Copyright</b> <a href="">QwibbleDesigns</a> - remove upon purchase.</span>
+        <a class="float right" href="#">top</a>
+    </p>
+
+</div><!--end wrapper-->
+
+
 }
