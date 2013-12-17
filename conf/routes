@@ -9,4 +9,4 @@ GET     /                           controllers.Application.index()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # upload
-POST    /upload                     controllers.upload.UploadController.uploadDicomFile()
+POST    /upload                     controllers.upload.UploadController.uploadDicomAndWriteToDiskAsJpeg()
