@@ -1,4 +1,4 @@
-@(message: String)
+@(message: String, images: List[String])
 
 @main("Gallery") {
 
@@ -71,18 +71,14 @@
         <div class="grid_9">
 
             <!-- for condition list-->
-
-            <a class="lightbox_trigger portfolio_item float alpha" href="@routes.Assets.at("images/jpeg/brain_001.jpg")">
+            @for(imagepath <- images){
+            <a class="lightbox_trigger portfolio_item float alpha" href='imagepath'>
                 <span>Project Name</span>
-                <img class="example-image" src="@routes.Assets.at("images/jpeg/brain_001.jpg")"  alt=""/>
+                <img class="example-image" src='imagepath'  alt=""/>
             </a>
-
+            }
 
             <!-- end for -->
-            <a class="lightbox_trigger portfolio_item float alpha" href="@routes.Assets.at("images/jpeg/brain_002.jpg")">
-                <span>Project Name</span>
-                <img class="" src="@routes.Assets.at("images/jpeg/brain_002.jpg")"  alt=""/>
-            </a>
 
         </div>
     </div>
