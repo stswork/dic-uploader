@@ -8,5 +8,10 @@ public class Application extends Controller {
 
         return ok(views.html.index.render("Your new application is ready."));
     }
-  
+
+
+    public static Result gallery() {
+
+        return ok(views.html.gallery.render("Your new application is ready."));
+    }
 }
