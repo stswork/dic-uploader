@@ -11,6 +11,7 @@ import java.util.List;
 public class Application extends Controller {
     private static final String PATH_FOR_JPEG = play.Play.application().getFile("public/images/jpeg").getAbsolutePath();
     private static final String PATH_FOR_DICOM = play.Play.application().getFile("public/images/dicom").getAbsolutePath();
+    private static final String PATH_FOR_DICOM_CONVERTER = play.Play.application().getFile("public/software").getAbsolutePath();
 
 
     public static Result index() {
@@ -30,6 +31,6 @@ public class Application extends Controller {
                 }
             }
         }
-        return ok(views.html.gallery.render("Gallery",jpegFilePaths));
+        return ok(views.html.gallery.render("Gallery",jpegFilePaths, PATH_FOR_DICOM_CONVERTER));
     }
 }
