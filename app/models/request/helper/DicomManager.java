@@ -1,10 +1,13 @@
 package models.request.helper;
 
+import models.S3File;
+import models.jpeg.JpegImage;
 import org.dcm4che2.data.*;
 import org.dcm4che2.imageio.plugins.dcm.DicomImageReadParam;
 import org.dcm4che2.io.DicomInputStream;
 import org.dcm4che2.io.DicomOutputStream;
 import org.dcm4che2.util.UIDUtils;
+import org.joda.time.DateTime;
 
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
@@ -13,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public class DicomManager {
 
@@ -76,11 +80,27 @@ public class DicomManager {
         }
     }
 
-    public static boolean writeDicomJpegToDisk(BufferedImage dicomJpegImage, String pathToSave) {
+    public static boolean writeDicomJpegToS3(BufferedImage dicomJpegImage, String fileName) {
 
         try {
-            File jpegFile = new File(pathToSave + "/DtoJ-" + new Date().getTime() + ".jpg");
-            OutputStream output = new BufferedOutputStream(new FileOutputStream(jpegFile));
+            String tempDir = System.getProperty("user.home");
+            String separator = File.separator;
+            File dicomJpegFile = new File(tempDir + separator + fileName + new DateTime().millisOfDay() + ".jpg");//ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(dicomJpegImage, "jpeg", dicomJpegFile);
+            S3File s3File = new S3File();
+            s3File.name = dicomJpegFile.getName();
+            s3File.file = dicomJpegFile;
+            s3File.save();
+            dicomJpegFile.delete();
+            //InputStream is = new ByteArrayInputStream(os.toByteArray());
+            /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(dicomJpegImage, "jpg", baos );
+            baos.flush();
+            byte[] imageInByte = baos.toByteArray();
+            baos.close();
+            JpegImage jpegImage = new JpegImage(imageInByte);
+            jpegImage.save();*/
+            /*OutputStream output = new BufferedOutputStream(new FileOutputStream(jpegFile));
             Iterator iterator = ImageIO.getImageWritersByFormatName("jpeg");
             ImageWriter writer = (ImageWriter)iterator.next();
             ImageWriteParam iwp = writer.getDefaultWriteParam();
@@ -89,7 +109,7 @@ public class DicomManager {
             writer.write(null, new IIOImage(dicomJpegImage, null, null), iwp);
             ios.flush();
             writer.dispose();
-            ios.close();
+            ios.close();*/
             /*JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
             encoder.encode(dicomJpegImage);
             output.close();*/
@@ -99,9 +119,13 @@ public class DicomManager {
             return false;
         }
     }
-    public static boolean writeDicomToDisk(File jpegFile, DicomObject dicomObject, String pathToSave) {
+    public static boolean writeDicomToS3(File jpegFile, DicomObject dicomObject) {
         try {
-            File dicomFile = new File(pathToSave + "/JtoD-" + new Date().getTime() + ".dcm");
+            String tempDir = System.getProperty("user.home");
+            String separator = File.separator;
+            File dicomFile = new File(tempDir + separator + jpegFile.getName() + new DateTime().millisOfDay() + ".dcm");
+            //ByteArrayOutputStream os = new ByteArrayOutputStream();
+            //File dicomFile = new File(pathToSave + "/JtoD-" + new DateTime().millisOfDay() + ".dcm");
             FileOutputStream fos = new FileOutputStream(dicomFile);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             DicomOutputStream dos = new DicomOutputStream(bos);
@@ -122,6 +146,11 @@ public class DicomManager {
                 dos.write(0);
             dos.writeHeader(Tag.SequenceDelimitationItem, null, 0);
             dos.close();
+            S3File s3File = new S3File();
+            s3File.name = dicomFile.getName();
+            s3File.file = dicomFile;
+            s3File.save();
+            dicomFile.delete();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,11 +158,22 @@ public class DicomManager {
         }
     }
 
-    public static boolean writeJpegToDisk(File jpegFile, String pathToSave) {
+    public static boolean writeJpegToS3(File jpegFile, String pathToSave) {
         try {
-            File jFile = new File(pathToSave + "/J-" + new Date().getTime() + ".jpg");
+            //File jFile = new File(pathToSave + "/J-" + new Date().getTime() + ".jpg");
+            String tempDir = System.getProperty("user.home");
+            String separator = File.separator;
+            File jFile = new File(tempDir + separator + jpegFile.getName() + ".jpg");
+
+
             BufferedImage bufferedImage = ImageIO.read(jpegFile);
-            OutputStream output = new BufferedOutputStream(new FileOutputStream(jFile));
+            ImageIO.write(bufferedImage, "jpeg", jFile);
+            S3File s3File = new S3File();
+            s3File.name = jFile.getName();
+            s3File.file = jFile;
+            s3File.save();
+            jFile.delete();
+           /* OutputStream output = new BufferedOutputStream(new FileOutputStream(jFile));
             Iterator iterator = ImageIO.getImageWritersByFormatName("jpeg");
             ImageWriter writer = (ImageWriter)iterator.next();
             ImageWriteParam iwp = writer.getDefaultWriteParam();
@@ -142,7 +182,7 @@ public class DicomManager {
             writer.write(null, new IIOImage(bufferedImage, null, null), iwp);
             ios.flush();
             writer.dispose();
-            ios.close();
+            ios.close();*/
             return true;
         } catch (Exception e) {
             e.printStackTrace();

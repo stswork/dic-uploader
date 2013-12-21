@@ -26,7 +26,7 @@
 
 
     <!-- File Upload-->
-    <form name="dicomToJpegUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToDiskAsJpeg()">
+    <form name="dicomToJpegUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToS3()">
     <h2 class="grid_12 caption clearfix">Please Upload Dicom Files:
         <span>
             <input type="file" name="dicomToJpegFC" id="dicomToJpegFC" accept="*">
@@ -36,7 +36,7 @@
     </form>
     <div class="pr grid_12 clearfix">&nbsp;</div>
 
-    <form name="jpegUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadJpegAndWriteTODisk()">
+    <form name="jpegUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadJpegAndWriteToS3()">
         <h2 class="grid_12 caption clearfix">Please Upload JEPG Files:
 		<span>
             <input type="file" name="jpegFC" id="jpegFC" accept="image/*">
@@ -66,9 +66,9 @@
 
             <!-- for condition list-->
             @for(i <- images){
-                <a class="lightbox_trigger portfolio_item float alpha" href='@routes.Assets.at("images/jpeg/")@i'>
+                <a class="lightbox_trigger portfolio_item float alpha" href='@i'>
                     <span>@i</span>
-                    <img class="example-image" src='@routes.Assets.at("images/jpeg/")@i'  alt=""/>
+                    <img  src="@i" alt="IMG DESC">
 
                 </a>
 

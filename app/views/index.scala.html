@@ -3,7 +3,7 @@
 @main("Home") {
 
 <!--
-<form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToDiskAsJpeg()">
+<form name="dicomUpload" method="POST" enctype="multipart/form-data" action="@controllers.dicom.routes.DicomController.uploadDicomAndWriteToS3()">
     <label id="dicomFCLabel" for="dicomFC" />
     <input id="dicomFC" name="dicomFC" type="file" />
     <button id="dicomUploadSubmit" name="dicomUploadSubmit">Upload</button>
