@@ -85,47 +85,25 @@ public class DicomManager {
         try {
             String tempDir = System.getProperty("user.home");
             String separator = File.separator;
-            File dicomJpegFile = new File(tempDir + separator + fileName + new DateTime().millisOfDay() + ".jpg");//ByteArrayOutputStream os = new ByteArrayOutputStream();
+            File dicomJpegFile = new File(tempDir + separator + fileName + new DateTime().millisOfDay() + ".jpg");
             ImageIO.write(dicomJpegImage, "jpeg", dicomJpegFile);
             S3File s3File = new S3File();
             s3File.name = dicomJpegFile.getName();
             s3File.file = dicomJpegFile;
             s3File.save();
             dicomJpegFile.delete();
-            //InputStream is = new ByteArrayInputStream(os.toByteArray());
-            /*ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(dicomJpegImage, "jpg", baos );
-            baos.flush();
-            byte[] imageInByte = baos.toByteArray();
-            baos.close();
-            JpegImage jpegImage = new JpegImage(imageInByte);
-            jpegImage.save();*/
-            /*OutputStream output = new BufferedOutputStream(new FileOutputStream(jpegFile));
-            Iterator iterator = ImageIO.getImageWritersByFormatName("jpeg");
-            ImageWriter writer = (ImageWriter)iterator.next();
-            ImageWriteParam iwp = writer.getDefaultWriteParam();
-            ImageOutputStream ios = ImageIO.createImageOutputStream(output);
-            writer.setOutput(ios);
-            writer.write(null, new IIOImage(dicomJpegImage, null, null), iwp);
-            ios.flush();
-            writer.dispose();
-            ios.close();*/
-            /*JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
-            encoder.encode(dicomJpegImage);
-            output.close();*/
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
     public static boolean writeDicomToS3(File jpegFile, DicomObject dicomObject) {
         try {
             String tempDir = System.getProperty("user.home");
             String separator = File.separator;
             File dicomFile = new File(tempDir + separator + jpegFile.getName() + new DateTime().millisOfDay() + ".dcm");
-            //ByteArrayOutputStream os = new ByteArrayOutputStream();
-            //File dicomFile = new File(pathToSave + "/JtoD-" + new DateTime().millisOfDay() + ".dcm");
             FileOutputStream fos = new FileOutputStream(dicomFile);
             BufferedOutputStream bos = new BufferedOutputStream(fos);
             DicomOutputStream dos = new DicomOutputStream(bos);
@@ -158,14 +136,11 @@ public class DicomManager {
         }
     }
 
-    public static boolean writeJpegToS3(File jpegFile, String pathToSave) {
+    public static boolean writeJpegToS3(File jpegFile) {
         try {
-            //File jFile = new File(pathToSave + "/J-" + new Date().getTime() + ".jpg");
             String tempDir = System.getProperty("user.home");
             String separator = File.separator;
-            File jFile = new File(tempDir + separator + jpegFile.getName() + ".jpg");
-
-
+            File jFile = new File(tempDir + separator + jpegFile.getName() + new DateTime().millisOfDay() + ".jpg");
             BufferedImage bufferedImage = ImageIO.read(jpegFile);
             ImageIO.write(bufferedImage, "jpeg", jFile);
             S3File s3File = new S3File();
@@ -173,21 +148,10 @@ public class DicomManager {
             s3File.file = jFile;
             s3File.save();
             jFile.delete();
-           /* OutputStream output = new BufferedOutputStream(new FileOutputStream(jFile));
-            Iterator iterator = ImageIO.getImageWritersByFormatName("jpeg");
-            ImageWriter writer = (ImageWriter)iterator.next();
-            ImageWriteParam iwp = writer.getDefaultWriteParam();
-            ImageOutputStream ios = ImageIO.createImageOutputStream(output);
-            writer.setOutput(ios);
-            writer.write(null, new IIOImage(bufferedImage, null, null), iwp);
-            ios.flush();
-            writer.dispose();
-            ios.close();*/
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-
 }

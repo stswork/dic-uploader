@@ -67,9 +67,9 @@ public class DicomController extends Controller {
             //SAVING DICOM FILE TO DISK
             boolean dicomSaved = DicomManager.writeDicomToS3(jpegFile, dicomObject);
             if(dicomSaved)
-                return ok(Json.toJson(new Message(200, "Dicom successfully saved to " + PATH_FOR_DICOM, MessageType.SUCCESSFUL)));
+                return redirect(controllers.routes.Application.gallery());
             else
-                return internalServerError(Json.toJson(new Message(500, "Jpeg not saved!", MessageType.INTERNAL_SERVER_ERROR)));
+                return redirect(controllers.routes.Application.index());
         }
     }
 
@@ -83,16 +83,13 @@ public class DicomController extends Controller {
             jpegFile = jpegFilePart.getFile();
         if(jpegFile == null)
             return notFound(Json.toJson(new Message(404, "File not found.", MessageType.NOT_FOUND)));
-        Http.MultipartFormData formData = request().body().asMultipartFormData();
-        Http.MultipartFormData.FilePart uploadFilePart = formData.getFile("upload");
-        if (uploadFilePart != null) {
-            /*S3File s3File = new S3File();
-            s3File.name = uploadFilePart.getFilename();
-            s3File.file = uploadFilePart.getFile();
-            s3File.save();*/
-            return ok();
-        } else {
-            return badRequest("File upload error");
+        else {
+            //SAVING JPEG FILE TO S3
+            boolean dicomSaved = DicomManager.writeJpegToS3(jpegFile);
+            if(dicomSaved)
+                return redirect(controllers.routes.Application.gallery());
+            else
+                return redirect(controllers.routes.Application.index());
         }
         /*boolean jpegWritten = DicomManager.writeJpegToS3(jpegFile, PATH_FOR_JPEG);
         if(jpegWritten)
@@ -103,15 +100,11 @@ public class DicomController extends Controller {
 
     public static Result getJpegFromId(Long id) {
         JpegImage jpegImage = JpegImage.find.byId(id);
-        InputStream in = new ByteArrayInputStream(jpegImage.getImageByteArray());
-        BufferedImage bi = null;
-        File tempFile = null;
-        try {
-            bi = ImageIO.read(in);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ok(jpegImage.getImageByteArray()).as("data:image/png;base64");
+        if(jpegImage == null) {
+            jpegImage = new JpegImage();
+            return ok(jpegImage.getImageByteArray()).as("data:image/png;base64");
+        } else
+            return ok(jpegImage.getImageByteArray()).as("data:image/png;base64");
     }
 
 
